@@ -1,5 +1,6 @@
 package ariefbelajarteknologi.springdatajpa.service;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,9 +21,24 @@ class CategoryServiceTest {
     }
 
     @Test
+    @Disabled
     void failed() {
         assertThrows(RuntimeException.class, () -> {
             categoryService.test();
+        });
+    }
+
+    @Test
+    void programmatic() {
+        assertThrows(RuntimeException.class, () -> {
+            categoryService.createCategoriesError();
+        });
+    }
+
+    @Test
+    void manual() {
+        assertThrows(RuntimeException.class, () -> {
+            categoryService.manual();
         });
     }
 }
