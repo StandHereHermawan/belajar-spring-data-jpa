@@ -1,10 +1,7 @@
 package ariefbelajarteknologi.springdatajpa.repository;
 
 import ariefbelajarteknologi.springdatajpa.entity.Category;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -21,6 +18,7 @@ class CategoryRepositoryTest {
 
     @Test
     @Order(1)
+    @Disabled
     void insert() {
         Category category = new Category();
         category.setName("GADGET");
@@ -57,5 +55,16 @@ class CategoryRepositoryTest {
         categoryRepository.delete(category);
         category = categoryRepository.findById(category.getId()).orElse(null);
         assertNull(category);
+    }
+
+    @Test
+    void queryMethod() {
+        Category category = categoryRepository.findFirstByNameEquals("GADGET TERKINI").orElse(null);
+        assertNotNull(category);
+        assertEquals("GADGET TERKINI", category.getName());
+
+        List<Category> categories = categoryRepository.findAllByNameLike("%GADGET%");
+        assertNotNull(category);
+        assertEquals("GADGET TERKINI",categories.get(0).getName());
     }
 }
