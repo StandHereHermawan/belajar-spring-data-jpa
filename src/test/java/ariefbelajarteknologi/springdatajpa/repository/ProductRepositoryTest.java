@@ -5,6 +5,8 @@ import ariefbelajarteknologi.springdatajpa.entity.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
@@ -60,5 +62,20 @@ class ProductRepositoryTest {
         assertEquals("Xiaomi Redmi Note 10 Pro", products.get(0).getName());
         assertEquals("Xiaomi Redmi Note 10", products.get(1).getName());
 
+    }
+
+    @Test
+    void pageable() {
+        // page 0
+        Pageable pageable = PageRequest.of(1, 1, Sort.by(Sort.Order.desc("id")));
+        List<Product> products = productRepository.findAllByCategory_Name("GADGET TERKINI", pageable);
+        assertEquals(1, products.size());
+        assertEquals("Xiaomi Redmi Note 10", products.get(0).getName());
+
+        // page 1
+        pageable = PageRequest.of(0, 1, Sort.by(Sort.Order.desc("id")));
+        products = productRepository.findAllByCategory_Name("GADGET TERKINI", pageable);
+        assertEquals(1, products.size());
+        assertEquals("Xiaomi Redmi Note 10 Pro", products.get(0).getName());
     }
 }
