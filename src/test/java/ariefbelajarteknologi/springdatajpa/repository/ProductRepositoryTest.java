@@ -5,6 +5,7 @@ import ariefbelajarteknologi.springdatajpa.entity.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -48,5 +49,16 @@ class ProductRepositoryTest {
         assertEquals(2, products.size());
         assertEquals("Xiaomi Redmi Note 10", products.get(0).getName());
         assertEquals("Xiaomi Redmi Note 10 Pro", products.get(1).getName());
+    }
+
+    @Test
+    void sort() {
+        Sort sort = Sort.by(Sort.Order.desc("id"));
+
+        List<Product> products = productRepository.findAllByCategory_Name("GADGET TERKINI", sort);
+        assertEquals(2, products.size());
+        assertEquals("Xiaomi Redmi Note 10 Pro", products.get(0).getName());
+        assertEquals("Xiaomi Redmi Note 10", products.get(1).getName());
+
     }
 }
