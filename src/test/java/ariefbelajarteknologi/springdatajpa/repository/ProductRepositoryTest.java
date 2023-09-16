@@ -111,8 +111,8 @@ class ProductRepositoryTest {
     }
 
     @Test
-    void delete() {
-        transactionOperations.executeWithoutResult(transactionStatus -> {
+    void deleteProgrammaticTransactions() {
+        transactionOperations.executeWithoutResult(transactionStatus -> { // transaksi 1
             Category category = categoryRepository.findById(1L).orElse(null);
             assertNotNull(category);
 
@@ -120,13 +120,31 @@ class ProductRepositoryTest {
             product.setName("Itel S23");
             product.setPrice(1_599_000L);
             product.setCategory(category);
-            productRepository.save(product);
+            productRepository.save(product); // transaksi 1
 
-            int delete = productRepository.deleteByName("Itel S23");
+            int delete = productRepository.deleteByName("Itel S23"); // transaksi 1
             assertEquals(1, delete);
 
-            delete = productRepository.deleteByName("Itel S23");
+            delete = productRepository.deleteByName("Itel S23"); // transaksi 1
             assertEquals(0, delete);
         });
+    }
+
+    @Test
+    void deleteDeclarativeTransactions() {
+            Category category = categoryRepository.findById(1L).orElse(null);
+            assertNotNull(category);
+
+            Product product = new Product();
+            product.setName("Itel S23");
+            product.setPrice(1_599_000L);
+            product.setCategory(category);
+            productRepository.save(product); // transaksi 1
+
+            int delete = productRepository.deleteByName("Itel S23"); // transaksi 2
+            assertEquals(1, delete);
+
+            delete = productRepository.deleteByName("Itel S23"); // transaksi 3
+            assertEquals(0, delete);
     }
 }
