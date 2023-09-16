@@ -85,4 +85,16 @@ class ProductRepositoryTest {
         assertEquals(2, products.getTotalPages());
         assertEquals("Xiaomi Redmi Note 10 Pro", products.getContent().get(0).getName());
     }
+
+    @Test
+    void count() {
+        Long count = productRepository.count();
+        assertEquals(2L, count);
+
+        count = productRepository.countByCategory_name("GADGET TERKINI");
+        assertEquals(2L,count);
+
+        count = productRepository.countByCategory_name("GADGET GAK ADA");
+        assertEquals(0L, count);
+    }
 }
