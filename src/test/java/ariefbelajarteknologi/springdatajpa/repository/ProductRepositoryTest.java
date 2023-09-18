@@ -172,4 +172,19 @@ class ProductRepositoryTest {
         assertEquals(2, products.getTotalPages());
         assertEquals(2, products.getTotalElements());
     }
+
+    @Test
+    void modifying() {
+        transactionOperations.executeWithoutResult(transactionStatus -> {
+            int totalAffected = productRepository.deleteProductUsingName("GAK ADA");
+            assertEquals(0, totalAffected);
+
+            totalAffected = productRepository.updateProductPriceToZero(1L);
+            assertEquals(1, totalAffected);
+
+            Product product = productRepository.findById(1L).orElse(null);
+            assertNotNull(product);
+            assertEquals(0L, product.getPrice());
+        });
+    }
 }
