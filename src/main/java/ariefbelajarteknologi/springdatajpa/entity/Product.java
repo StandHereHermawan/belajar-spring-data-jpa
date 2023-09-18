@@ -12,6 +12,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "products")
+@NamedQueries({
+        @NamedQuery(
+                name = "Product.searchProductUsingName",
+                query = "select p from Product p where p.name = :name"
+        )
+})
 public class Product {
 
     @Id
