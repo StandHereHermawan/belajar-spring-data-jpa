@@ -132,19 +132,27 @@ class ProductRepositoryTest {
 
     @Test
     void deleteDeclarativeTransactions() {
-            Category category = categoryRepository.findById(1L).orElse(null);
-            assertNotNull(category);
+        Category category = categoryRepository.findById(1L).orElse(null);
+        assertNotNull(category);
 
-            Product product = new Product();
-            product.setName("Itel S23");
-            product.setPrice(1_599_000L);
-            product.setCategory(category);
-            productRepository.save(product); // transaksi 1
+        Product product = new Product();
+        product.setName("Itel S23");
+        product.setPrice(1_599_000L);
+        product.setCategory(category);
+        productRepository.save(product); // transaksi 1
 
-            int delete = productRepository.deleteByName("Itel S23"); // transaksi 2
-            assertEquals(1, delete);
+        int delete = productRepository.deleteByName("Itel S23"); // transaksi 2
+        assertEquals(1, delete);
 
-            delete = productRepository.deleteByName("Itel S23"); // transaksi 3
-            assertEquals(0, delete);
+        delete = productRepository.deleteByName("Itel S23"); // transaksi 3
+        assertEquals(0, delete);
+    }
+
+    @Test
+    void namedQuery() {
+        Pageable pageable = PageRequest.of(0, 1);
+        List<Product> products = productRepository.searchProductUsingName("Xiaomi Redmi Note 10 Pro", pageable);
+        assertEquals(1, products.size());
+        assertEquals("Xiaomi Redmi Note 10 Pro", products.get(0).getName());
     }
 }
