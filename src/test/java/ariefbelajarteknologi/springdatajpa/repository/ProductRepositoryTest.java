@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.support.TransactionOperations;
 
 import java.util.List;
@@ -237,5 +238,20 @@ class ProductRepositoryTest {
             product.setPrice(3_499_000L);
             productRepository.save(product);
         });
+    }
+
+    @Test
+    void specification() {
+        Specification<Product> specification = (root, criteriaQuery, criteriaBuilder) -> {
+            return criteriaQuery.where(
+                    criteriaBuilder.or(
+                            criteriaBuilder.equal(root.get("name"), "Xiaomi Redmi Note 10"),
+                            criteriaBuilder.equal(root.get("name"), "Xiaomi Redmi Note 10 Pro")
+                    )
+            ).getRestriction();
+        };
+
+        List<Product> products = productRepository.findAll(specification);
+        assertEquals(2, products.size());
     }
 }
