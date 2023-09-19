@@ -1,5 +1,6 @@
 package ariefbelajarteknologi.springdatajpa.repository;
 
+import ariefbelajarteknologi.springdatajpa.entity.Category;
 import ariefbelajarteknologi.springdatajpa.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,9 +13,12 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
+
+    Stream<Product> streamAllByCategory(Category category);
 
     @Modifying
     @Query("delete from Product p where p.name = :name")
