@@ -22,4 +22,11 @@ CREATE TABLE products
     FOREIGN KEY fk_products_categories (category_id) REFERENCES categories (id)
 ) ENGINE = InnoDB;
 
-SELECT * FROM products;
+SELECT *
+FROM products;
+
+ALTER TABLE categories
+    ADD COLUMN created_date TIMESTAMP;
+
+ALTER TABLE categories
+    ADD COLUMN last_modified_date TIMESTAMP;
