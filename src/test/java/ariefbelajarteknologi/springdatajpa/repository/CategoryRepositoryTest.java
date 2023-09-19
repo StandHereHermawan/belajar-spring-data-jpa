@@ -67,4 +67,15 @@ class CategoryRepositoryTest {
         assertNotNull(category);
         assertEquals("GADGET TERKINI",categories.get(0).getName());
     }
+
+    @Test
+    void audit() {
+        Category category = new Category();
+        category.setName("LAPTOP TERKINI");
+        categoryRepository.save(category);
+
+        assertNotNull(category.getId());
+        assertNotNull(category.getCreatedDate());
+        assertNotNull(category.getLastModifiedDate());
+    }
 }
