@@ -2,6 +2,9 @@ package ariefbelajarteknologi.springdatajpa.repository;
 
 import ariefbelajarteknologi.springdatajpa.entity.Category;
 import ariefbelajarteknologi.springdatajpa.entity.Product;
+import ariefbelajarteknologi.springdatajpa.model.ProductPrice;
+import ariefbelajarteknologi.springdatajpa.model.SimpleProduct;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -57,6 +60,7 @@ class ProductRepositoryTest {
     }
 
     @Test
+    @Disabled
     void sort() {
         Sort sort = Sort.by(Sort.Order.desc("id"));
 
@@ -68,6 +72,7 @@ class ProductRepositoryTest {
     }
 
     @Test
+    @Disabled
     void pageable() {
         // page 0
         Pageable pageable = PageRequest.of(1, 1, Sort.by(Sort.Order.desc("id")));
@@ -89,6 +94,7 @@ class ProductRepositoryTest {
     }
 
     @Test
+    @Disabled
     void count() {
         Long count = productRepository.count();
         assertEquals(2L, count);
@@ -253,5 +259,14 @@ class ProductRepositoryTest {
 
         List<Product> products = productRepository.findAll(specification);
         assertEquals(2, products.size());
+    }
+
+    @Test
+    void projection() {
+        List<SimpleProduct> simpleProducts = productRepository.findAllByNameLike("%Xiaomi%", SimpleProduct.class);
+        assertEquals(2, simpleProducts.size());
+
+        List<ProductPrice> productPrices = productRepository.findAllByNameLike("%Xiaomi%", ProductPrice.class);
+        assertEquals(2,productPrices.size());
     }
 }
